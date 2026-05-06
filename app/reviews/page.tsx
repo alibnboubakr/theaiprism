@@ -1,11 +1,15 @@
 import Link from 'next/link';
+import { getAllMDXFiles } from '@/lib/mdx';
 
 export const metadata = {
   title: 'AI Tool Reviews | The AI Prism',
-  description: 'In-depth, honest reviews of AI tools. We test for 30+ days so you know what works.',
+  description:
+    'In-depth, honest reviews of AI tools. We test for 30+ days so you know what works.',
 };
 
 export default function ReviewsPage() {
+  const reviews = getAllMDXFiles('reviews');
+
   return (
     <div className="container mx-auto px-4 py-12 max-w-6xl">
       <header className="mb-12 text-center">
@@ -18,33 +22,7 @@ export default function ReviewsPage() {
       </header>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {/* Sample review cards - will be dynamically generated from MDX */}
-        {[
-          {
-            title: 'Jasper AI Review',
-            tool: 'Jasper AI',
-            rating: 4.2,
-            excerpt: 'We tested Jasper for 30 days on 100 blog posts. Here is the ROI breakdown.',
-            date: '2026-06-10',
-            slug: 'jasper-ai-review',
-          },
-          {
-            title: 'Midjourney Deep Dive',
-            tool: 'Midjourney',
-            rating: 4.8,
-            excerpt: 'Is the $10/mo plan worth it for commercial designers? We break down the ROI.',
-            date: '2026-06-08',
-            slug: 'midjourney-review',
-          },
-          {
-            title: 'Notion AI: 30-Day Test',
-            tool: 'Notion AI',
-            rating: 4.0,
-            excerpt: 'We used Notion AI for personal knowledge management. Here is what we found.',
-            date: '2026-06-05',
-            slug: 'notion-ai-review',
-          },
-        ].map((review) => (
+        {reviews.map((review) => (
           <Link
             key={review.slug}
             href={`/reviews/${review.slug}`}
@@ -56,31 +34,45 @@ export default function ReviewsPage() {
                 Review
               </span>
             </div>
-            
+
             <h2 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-              {review.title}
+              {review.frontmatter.title}
             </h2>
-            
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
-              {review.excerpt}
-            </p>
-            
+
+            {review.frontmatter.excerpt && (
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
+                {review.frontmatter.excerpt}
+              </p>
+            )}
+
             <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-              <div className="flex items-center gap-1">
-                <span>Rating:</span>
-                <span className="text-yellow-500">{'★'.repeat(Math.floor(review.rating))}</span>
-                <span>{review.rating}</span>
-              </div>
-              <time dateTime={review.date}>
-                {new Date(review.date).toLocaleDateString('en-US', {
+              {typeof review.frontmatter.schemaRating === 'number' && (
+                <div className="flex items-center gap-1">
+                  <span className="text-yellow-500">
+                    {'★'.repeat(Math.floor(review.frontmatter.schemaRating))}
+                  </span>
+                  <span>{review.frontmatter.schemaRating.toFixed(1)}</span>
+                </div>
+              )}
+              <time dateTime={review.frontmatter.date}>
+                {new Date(review.frontmatter.date).toLocaleDateString('en-US', {
                   month: 'short',
                   day: 'numeric',
+                  year: 'numeric',
                 })}
               </time>
             </div>
           </Link>
         ))}
       </div>
+
+      {reviews.length === 0 && (
+        <div className="text-center py-12">
+          <p className="text-gray-600 dark:text-gray-400">
+            No reviews yet. Check back soon!
+          </p>
+        </div>
+      )}
     </div>
   );
 }

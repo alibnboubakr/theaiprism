@@ -1,11 +1,6 @@
 import { notFound } from 'next/navigation';
 import { getAllMDXFiles, getMDXFile } from '@/lib/mdx';
-import {
-  generateReviewSchema,
-  generateSoftwareApplicationSchema,
-  JsonLdScript,
-  SITE_URL,
-} from '@/lib/seo';
+import { generateArticleSchema, JsonLdScript, SITE_URL } from '@/lib/seo';
 import { Metadata } from 'next';
 import MDXContent from '@/components/MDXContent';
 import NewsletterSignup from '@/components/NewsletterSignup';
@@ -15,22 +10,24 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const files = getAllMDXFiles('versus');
+  const files = getAllMDXFiles('ai-stacks');
   return files.map((file) => ({ slug: file.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const file = getMDXFile('versus', params.slug);
+  const file = getMDXFile('ai-stacks', params.slug);
   if (!file) return {};
 
-  const url = `${SITE_URL}/versus/${file.slug}`;
+  const url = `${SITE_URL}/ai-stacks/${file.slug}`;
   return {
     title: `${file.frontmatter.title} | The AI Prism`,
-    description: `Compare ${file.frontmatter.toolA || 'Tool A'} vs ${file.frontmatter.toolB || 'Tool B'}. Honest, ad-free comparison by The AI Prism.`,
+    description:
+      file.frontmatter.description ||
+      `${file.frontmatter.title} — curated AI tool stack from The AI Prism.`,
     alternates: { canonical: url },
     openGraph: {
       title: file.frontmatter.title,
-      description: `Compare ${file.frontmatter.toolA || 'Tool A'} vs ${file.frontmatter.toolB || 'Tool B'}.`,
+      description: file.frontmatter.description,
       type: 'article',
       url,
       publishedTime: file.frontmatter.date,
@@ -38,35 +35,36 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function VersusSlugPage({ params }: PageProps) {
-  const file = getMDXFile('versus', params.slug);
+export default async function AIStackSlugPage({ params }: PageProps) {
+  const file = getMDXFile('ai-stacks', params.slug);
   if (!file) notFound();
 
-  const url = `${SITE_URL}/versus/${file.slug}`;
+  const url = `${SITE_URL}/ai-stacks/${file.slug}`;
 
-  const reviewSchema = generateReviewSchema({
-    toolName: file.frontmatter.toolA || 'AI Tool',
-    rating: file.frontmatter.schemaRating || 4.0,
-    price: 'Varies',
-    authorName: 'The AI Prism Team',
-    reviewBody: file.content.substring(0, 500),
+  const articleSchema = generateArticleSchema({
+    title: file.frontmatter.title,
+    description:
+      file.frontmatter.description || file.content.substring(0, 200),
+    authorName: file.frontmatter.author || 'The AI Prism Team',
     datePublished: file.frontmatter.date,
     url,
   });
 
-  const softwareSchema = generateSoftwareApplicationSchema({
-    toolName: file.frontmatter.toolA || 'AI Tool',
-    price: 'Varies',
-  });
-
   return (
     <article className="container mx-auto px-4 py-8 max-w-4xl">
-      <JsonLdScript schema={reviewSchema} />
-      <JsonLdScript schema={softwareSchema} />
+      <JsonLdScript schema={articleSchema} />
 
       <header className="mb-8">
         <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 mb-4">
-          <span>Versus Comparison</span>
+          <span>AI Stack</span>
+          {file.frontmatter.price && (
+            <>
+              <span>•</span>
+              <span className="font-semibold text-green-600 dark:text-green-400">
+                {file.frontmatter.price}
+              </span>
+            </>
+          )}
           <span>•</span>
           <time dateTime={file.frontmatter.date}>
             {new Date(file.frontmatter.date).toLocaleDateString('en-US', {
@@ -81,9 +79,9 @@ export default async function VersusSlugPage({ params }: PageProps) {
           {file.frontmatter.title}
         </h1>
 
-        {file.frontmatter.affiliateFocus && (
+        {file.frontmatter.description && (
           <p className="text-lg text-gray-700 dark:text-gray-300">
-            Focus: {file.frontmatter.affiliateFocus}
+            {file.frontmatter.description}
           </p>
         )}
       </header>

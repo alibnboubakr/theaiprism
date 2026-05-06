@@ -63,9 +63,34 @@ function Header() {
 
 function Footer() {
   return (
-    <footer className="border-t border-gray-200 dark:border-gray-800 py-8 mt-16">
-      <div className="container mx-auto px-4 text-center text-sm text-gray-600 dark:text-gray-400">
-        <p className="mt-2">100% Ad-Free. Built for the AI community.</p>
+    <footer className="border-t border-gray-200 dark:border-gray-800 mt-16">
+      <div className="container mx-auto px-4 py-12 grid gap-8 md:grid-cols-4 text-sm">
+        <div className="md:col-span-2">
+          <span className="text-xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
+            The AI Prism
+          </span>
+          <p className="mt-2 text-gray-600 dark:text-gray-400 max-w-md">
+            100% ad-free AI tool reviews, comparisons, and stacks. We test so you don&apos;t waste your money.
+          </p>
+        </div>
+        <div>
+          <h4 className="font-semibold mb-3 text-gray-900 dark:text-gray-100">Browse</h4>
+          <ul className="space-y-2 text-gray-600 dark:text-gray-400">
+            <li><a href="/reviews" className="hover:text-blue-500">Reviews</a></li>
+            <li><a href="/versus" className="hover:text-blue-500">Versus</a></li>
+            <li><a href="/ai-stacks" className="hover:text-blue-500">AI Stacks</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 className="font-semibold mb-3 text-gray-900 dark:text-gray-100">About</h4>
+          <ul className="space-y-2 text-gray-600 dark:text-gray-400">
+            <li><a href="/ad-free-ethos" className="hover:text-blue-500">Our Ad-Free Ethos</a></li>
+            <li><a href="/sitemap.xml" className="hover:text-blue-500">Sitemap</a></li>
+          </ul>
+        </div>
+      </div>
+      <div className="border-t border-gray-200 dark:border-gray-800 py-6 text-center text-xs text-gray-500 dark:text-gray-400">
+        © {new Date().getFullYear()} The AI Prism. Affiliate-supported, ad-free.
       </div>
     </footer>
   );

@@ -1,12 +1,17 @@
-'use client';
+import { MDXRemote } from 'next-mdx-remote/rsc';
+import AffiliateButton, { AffiliateButtonGroup } from './AffiliateButton';
+import VersusTable from './VersusTable';
 
-import { MDXRemote } from 'next-mdx-remote';
-import type { MDXRemoteSerializeResult } from 'next-mdx-remote';
+const components = {
+  AffiliateButton,
+  AffiliateButtonGroup,
+  VersusTable,
+};
 
 interface MDXContentProps {
-  source: MDXRemoteSerializeResult;
+  source: string;
 }
 
 export default function MDXContent({ source }: MDXContentProps) {
-  return <MDXRemote {...source} />;
+  return <MDXRemote source={source} components={components} />;
 }

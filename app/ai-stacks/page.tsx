@@ -1,34 +1,14 @@
 import Link from 'next/link';
+import { getAllMDXFiles } from '@/lib/mdx';
 
 export const metadata = {
   title: 'AI Stacks for Every Budget | The AI Prism',
-  description: 'Curated AI tool stacks for solopreneurs, students, agencies, and creators. Find your perfect setup.',
+  description:
+    'Curated AI tool stacks for solopreneurs, students, agencies, and creators. Find your perfect setup.',
 };
 
 export default function AIStacksPage() {
-  const stacks = [
-    {
-      title: 'The $0 AI Stack for Students',
-      price: '$0/mo',
-      description: 'Free tools that rival paid alternatives. Perfect for college students on a budget.',
-      tools: ['Notion AI (Free)', 'ChatGPT Free', 'Canva Free', 'Grammarly Free'],
-      slug: 'free-ai-stack-students',
-    },
-    {
-      title: 'The $100/mo Solopreneur Stack',
-      price: '$100/mo',
-      description: 'The essential AI toolkit for running a one-person business efficiently.',
-      tools: ['Jasper AI', 'Midjourney', 'SurferSEO', 'ConvertKit'],
-      slug: '100-dollar-solopreneur-stack',
-    },
-    {
-      title: 'The AI Coding Stack',
-      price: '$50/mo',
-      description: 'Accelerate your development workflow with these AI coding assistants.',
-      tools: ['GitHub Copilot', 'Cursor', 'v0.dev', 'ChatGPT Plus'],
-      slug: 'ai-coding-stack-developers',
-    },
-  ];
+  const stacks = getAllMDXFiles('ai-stacks');
 
   return (
     <div className="container mx-auto px-4 py-12 max-w-6xl">
@@ -43,48 +23,64 @@ export default function AIStacksPage() {
 
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
         {stacks.map((stack) => (
-          <div
+          <Link
             key={stack.slug}
-            className="p-6 bg-white dark:bg-gray-900 rounded-xl shadow-md border border-gray-200 dark:border-gray-800"
+            href={`/ai-stacks/${stack.slug}`}
+            className="group block p-6 bg-white dark:bg-gray-900 rounded-xl shadow-md hover:shadow-xl transition-all border border-gray-200 dark:border-gray-800 hover:border-blue-500 dark:hover:border-blue-400"
           >
             <div className="flex items-center justify-between mb-4">
               <span className="text-3xl">🛠️</span>
-              <span className="text-2xl font-bold text-green-600 dark:text-green-400">
-                {stack.price}
-              </span>
+              {stack.frontmatter.price && (
+                <span className="text-2xl font-bold text-green-600 dark:text-green-400">
+                  {stack.frontmatter.price}
+                </span>
+              )}
             </div>
-            
-            <h2 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100">
-              {stack.title}
+
+            <h2 className="text-xl font-semibold mb-2 text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              {stack.frontmatter.title}
             </h2>
-            
-            <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm">
-              {stack.description}
-            </p>
-            
-            <div className="mb-4">
-              <h3 className="text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">
-                Includes:
-              </h3>
-              <ul className="space-y-1">
-                {stack.tools.map((tool) => (
-                  <li key={tool} className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-2">
-                    <span className="text-green-500">✓</span>
-                    {tool}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            
-            <Link
-              href={`/ai-stacks/${stack.slug}`}
-              className="block w-full text-center py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              View Stack
-            </Link>
-          </div>
+
+            {stack.frontmatter.description && (
+              <p className="text-gray-600 dark:text-gray-400 mb-4 text-sm line-clamp-3">
+                {stack.frontmatter.description}
+              </p>
+            )}
+
+            {Array.isArray(stack.frontmatter.tools) && (
+              <div className="mb-4">
+                <h3 className="text-sm font-semibold mb-2 text-gray-700 dark:text-gray-300">
+                  Includes:
+                </h3>
+                <ul className="space-y-1">
+                  {(stack.frontmatter.tools as string[]).slice(0, 4).map((tool) => (
+                    <li
+                      key={tool}
+                      className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-2"
+                    >
+                      <span className="text-green-500">✓</span>
+                      {tool}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <span className="inline-flex items-center text-blue-600 dark:text-blue-400 text-sm font-medium">
+              View stack
+              <span className="ml-1 group-hover:translate-x-1 transition-transform">→</span>
+            </span>
+          </Link>
         ))}
       </div>
+
+      {stacks.length === 0 && (
+        <div className="text-center py-12">
+          <p className="text-gray-600 dark:text-gray-400">
+            No stacks yet. Check back soon!
+          </p>
+        </div>
+      )}
     </div>
   );
 }

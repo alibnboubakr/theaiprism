@@ -15,22 +15,24 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const files = getAllMDXFiles('versus');
+  const files = getAllMDXFiles('reviews');
   return files.map((file) => ({ slug: file.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const file = getMDXFile('versus', params.slug);
+  const file = getMDXFile('reviews', params.slug);
   if (!file) return {};
 
-  const url = `${SITE_URL}/versus/${file.slug}`;
+  const url = `${SITE_URL}/reviews/${file.slug}`;
   return {
     title: `${file.frontmatter.title} | The AI Prism`,
-    description: `Compare ${file.frontmatter.toolA || 'Tool A'} vs ${file.frontmatter.toolB || 'Tool B'}. Honest, ad-free comparison by The AI Prism.`,
+    description:
+      file.frontmatter.excerpt ||
+      `Honest, ad-free review of ${file.frontmatter.toolName || file.frontmatter.title}.`,
     alternates: { canonical: url },
     openGraph: {
       title: file.frontmatter.title,
-      description: `Compare ${file.frontmatter.toolA || 'Tool A'} vs ${file.frontmatter.toolB || 'Tool B'}.`,
+      description: file.frontmatter.excerpt,
       type: 'article',
       url,
       publishedTime: file.frontmatter.date,
@@ -38,25 +40,25 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export default async function VersusSlugPage({ params }: PageProps) {
-  const file = getMDXFile('versus', params.slug);
+export default async function ReviewSlugPage({ params }: PageProps) {
+  const file = getMDXFile('reviews', params.slug);
   if (!file) notFound();
 
-  const url = `${SITE_URL}/versus/${file.slug}`;
+  const url = `${SITE_URL}/reviews/${file.slug}`;
 
   const reviewSchema = generateReviewSchema({
-    toolName: file.frontmatter.toolA || 'AI Tool',
+    toolName: file.frontmatter.toolName || file.frontmatter.title,
     rating: file.frontmatter.schemaRating || 4.0,
-    price: 'Varies',
-    authorName: 'The AI Prism Team',
-    reviewBody: file.content.substring(0, 500),
+    price: file.frontmatter.price || 'Varies',
+    authorName: file.frontmatter.author || 'The AI Prism Team',
+    reviewBody: file.frontmatter.excerpt || file.content.substring(0, 500),
     datePublished: file.frontmatter.date,
     url,
   });
 
   const softwareSchema = generateSoftwareApplicationSchema({
-    toolName: file.frontmatter.toolA || 'AI Tool',
-    price: 'Varies',
+    toolName: file.frontmatter.toolName || file.frontmatter.title,
+    price: file.frontmatter.price || 'Varies',
   });
 
   return (
@@ -66,7 +68,7 @@ export default async function VersusSlugPage({ params }: PageProps) {
 
       <header className="mb-8">
         <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 mb-4">
-          <span>Versus Comparison</span>
+          <span>Review</span>
           <span>•</span>
           <time dateTime={file.frontmatter.date}>
             {new Date(file.frontmatter.date).toLocaleDateString('en-US', {
@@ -75,15 +77,26 @@ export default async function VersusSlugPage({ params }: PageProps) {
               day: 'numeric',
             })}
           </time>
+          {typeof file.frontmatter.schemaRating === 'number' && (
+            <>
+              <span>•</span>
+              <span className="text-yellow-500">
+                {'★'.repeat(Math.floor(file.frontmatter.schemaRating))}
+                <span className="ml-1 text-gray-600 dark:text-gray-400">
+                  {file.frontmatter.schemaRating.toFixed(1)}
+                </span>
+              </span>
+            </>
+          )}
         </div>
 
         <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
           {file.frontmatter.title}
         </h1>
 
-        {file.frontmatter.affiliateFocus && (
+        {file.frontmatter.excerpt && (
           <p className="text-lg text-gray-700 dark:text-gray-300">
-            Focus: {file.frontmatter.affiliateFocus}
+            {file.frontmatter.excerpt}
           </p>
         )}
       </header>

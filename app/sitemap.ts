@@ -7,7 +7,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '',
     '/reviews',
     '/versus',
+    '/alternatives',
     '/ai-stacks',
+    '/news',
     '/ad-free-ethos',
   ].map((path) => ({
     url: `${SITE_URL}${path}`,
@@ -16,7 +18,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: path === '' ? 1.0 : 0.8,
   }));
 
-  const buildEntries = (subdir: 'reviews' | 'versus' | 'ai-stacks') =>
+  const buildEntries = (
+    subdir: 'reviews' | 'versus' | 'alternatives' | 'ai-stacks' | 'news',
+  ) =>
     getAllMDXFiles(subdir).map((file) => ({
       url: `${SITE_URL}/${subdir}/${file.slug}`,
       lastModified: new Date(file.frontmatter.date),
@@ -28,6 +32,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...staticRoutes,
     ...buildEntries('reviews'),
     ...buildEntries('versus'),
+    ...buildEntries('alternatives'),
     ...buildEntries('ai-stacks'),
+    ...buildEntries('news'),
   ];
 }

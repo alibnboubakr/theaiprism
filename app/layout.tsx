@@ -44,8 +44,14 @@ function Header() {
           <a href="/versus" className="text-sm font-medium hover:text-blue-500 transition-colors">
             Versus
           </a>
+          <a href="/alternatives" className="text-sm font-medium hover:text-blue-500 transition-colors">
+            Alternatives
+          </a>
           <a href="/ai-stacks" className="text-sm font-medium hover:text-blue-500 transition-colors">
             AI Stacks
+          </a>
+          <a href="/news" className="text-sm font-medium hover:text-blue-500 transition-colors">
+            News
           </a>
           <a href="/ad-free-ethos" className="text-sm font-medium hover:text-blue-500 transition-colors">
             Our Ad-Free Ethos
@@ -78,7 +84,9 @@ function Footer() {
           <ul className="space-y-2 text-gray-600 dark:text-gray-400">
             <li><a href="/reviews" className="hover:text-blue-500">Reviews</a></li>
             <li><a href="/versus" className="hover:text-blue-500">Versus</a></li>
+            <li><a href="/alternatives" className="hover:text-blue-500">Alternatives</a></li>
             <li><a href="/ai-stacks" className="hover:text-blue-500">AI Stacks</a></li>
+            <li><a href="/news" className="hover:text-blue-500">News</a></li>
           </ul>
         </div>
         <div>

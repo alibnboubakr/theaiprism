@@ -133,6 +133,62 @@ export const AFFILIATE_LINKS: AffiliateLink[] = [
     nonAffiliateUrl: "https://writesonic.com/",
     category: "writing",
   },
+  {
+    id: "claude-code",
+    toolName: "Claude Code",
+    affiliateUrl: "https://claude.com/product/claude-code?ref=theaiprism",
+    nonAffiliateUrl: "https://claude.com/product/claude-code",
+    category: "coding",
+  },
+  {
+    id: "cline",
+    toolName: "Cline",
+    affiliateUrl: "https://cline.bot/?ref=theaiprism",
+    nonAffiliateUrl: "https://cline.bot/",
+    category: "coding",
+  },
+  {
+    id: "windsurf",
+    toolName: "Windsurf",
+    affiliateUrl: "https://windsurf.com/?ref=theaiprism",
+    nonAffiliateUrl: "https://windsurf.com/",
+    category: "coding",
+  },
+  {
+    id: "aider",
+    toolName: "Aider",
+    affiliateUrl: "https://aider.chat/?ref=theaiprism",
+    nonAffiliateUrl: "https://aider.chat/",
+    category: "coding",
+  },
+  {
+    id: "zed",
+    toolName: "Zed",
+    affiliateUrl: "https://zed.dev/?ref=theaiprism",
+    nonAffiliateUrl: "https://zed.dev/",
+    category: "coding",
+  },
+  {
+    id: "sourcegraph-cody",
+    toolName: "Sourcegraph Cody",
+    affiliateUrl: "https://sourcegraph.com/cody?ref=theaiprism",
+    nonAffiliateUrl: "https://sourcegraph.com/cody",
+    category: "coding",
+  },
+  {
+    id: "gemini-advanced",
+    toolName: "Gemini Advanced",
+    affiliateUrl: "https://gemini.google.com/advanced?ref=theaiprism",
+    nonAffiliateUrl: "https://gemini.google.com/advanced",
+    category: "writing",
+  },
+  {
+    id: "sentry",
+    toolName: "Sentry",
+    affiliateUrl: "https://sentry.io/?ref=theaiprism",
+    nonAffiliateUrl: "https://sentry.io/",
+    category: "observability",
+  },
 ];
 
 export function getAffiliateLink(toolName: string): AffiliateLink | undefined {

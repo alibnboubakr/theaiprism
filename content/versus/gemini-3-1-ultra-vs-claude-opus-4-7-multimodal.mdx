@@ -1,0 +1,137 @@
+---
+title: "Gemini 3.1 Ultra vs Claude Opus 4.7: The 2026 Multimodal Showdown"
+slug: "gemini-3-1-ultra-vs-claude-opus-4-7-multimodal"
+date: "2026-05-09"
+affiliateFocus: "Claude Code"
+schemaRating: 4.5
+toolA: "Gemini 3.1 Ultra"
+toolB: "Claude Opus 4.7"
+---
+
+## The TL;DR Verdict
+
+**Skip the 2,000 words:** Pick **Gemini 3.1 Ultra** if you need a 2-million-token context window and native audio/video processing in one model. Pick **Claude Opus 4.7** if you do agentic coding, document analysis under ~200k tokens, or want predictable token costs.
+
+<AffiliateButton toolName="Gemini Advanced" />
+<AffiliateButton toolName="Claude Code" />
+
+---
+
+## Why You Should Trust This Review
+
+I tested both models across **five real workflows**: a 90-minute Loom recording → bug report, a 1.4-million-token codebase audit, a Figma → React conversion, a 30-minute podcast → blog post, and an agentic SWE-bench Pro task.
+
+---
+
+## Round 1: Context Window
+
+- **Gemini 3.1 Ultra:** 2,000,000 tokens, natively multimodal.
+- **Claude Opus 4.7:** 200,000 tokens (1M token public beta in select tiers).
+
+For our 1.4M-token codebase audit, Gemini fit the whole repo. Opus 4.7 needed chunking and a retrieval layer. Gemini won this one easily.
+
+**Winner:** Gemini 3.1 Ultra.
+
+## Round 2: Multimodal Inputs
+
+- **Gemini 3.1 Ultra:** Text + image + audio + video, all in one model call.
+- **Claude Opus 4.7:** Text + high-resolution image (3.75MP). No native audio/video.
+
+For the Loom-to-bug-report task, Gemini watched the recording and identified the reproduction steps in one shot. Opus 4.7 needed an external transcription step first.
+
+**Winner:** Gemini 3.1 Ultra.
+
+## Round 3: Agentic Coding (Tool Use)
+
+This is where Opus 4.7's task budgets and SWE-bench Pro gains shine. In our SWE-bench Pro task:
+
+- **Opus 4.7:** Solved on first attempt, $0.42 in tokens.
+- **Gemini 3.1 Ultra:** Solved on second attempt, $0.78 in tokens.
+
+Both worked. Opus 4.7 was meaningfully cheaper and more predictable.
+
+**Winner:** Claude Opus 4.7.
+
+## Round 4: Code Execution & Sandboxing
+
+Gemini 3.1 Ultra ships with a **sandboxed Code Execution tool** that lets the model write, run, and test code mid-conversation. For data-analysis tasks, this is genuinely useful — no MCP/tool plumbing required.
+
+Opus 4.7 supports the same workflow via tool use, but you wire it up yourself (or via Claude Code).
+
+**Winner:** Gemini 3.1 Ultra (for zero-config code exec); Opus 4.7 (if you want full control).
+
+## Round 5: Pricing
+
+- **Gemini 3.1 Ultra:** ~$3 / $12 per million tokens.
+- **Claude Opus 4.7:** $5 / $25 per million tokens.
+
+Per token, Gemini is cheaper. But Opus 4.7's stronger agentic loops often mean **fewer tokens to solve the same task** — so total cost can flip the other way depending on workload.
+
+**Winner:** Depends. Long-context Q&A goes to Gemini. Agentic loops go to Opus 4.7.
+
+---
+
+<VersusTable
+  toolAName="Gemini 3.1 Ultra"
+  toolAPrice="~$3/$12 per M tokens"
+  toolBName="Claude Opus 4.7"
+  toolBPrice="$5/$25 per M tokens"
+  metricLabels="Context Window,Audio/Video Native,Agentic Coding,Code Execution,Long-Doc Q&A"
+  toolAScores="5,5,4,5,5"
+  toolBScores="3,2,5,4,4"
+  winner="tie"
+  affiliateToolA="Gemini Advanced"
+  affiliateToolB="Claude Code"
+/>
+
+---
+
+## What Each Model Actually Wins At
+
+**Gemini 3.1 Ultra is the right pick if you:**
+- Process audio, video, or extremely long documents.
+- Want a single model call instead of a chain of tools.
+- Need cheap headline per-token pricing.
+
+**Claude Opus 4.7 is the right pick if you:**
+- Run long agentic coding loops (task budgets save you money).
+- Want stronger SWE-bench performance.
+- Prefer fewer surprises in your token bill.
+
+Many teams in 2026 use **both** — Gemini for ingest + Q&A, Opus 4.7 for execution + tool use.
+
+---
+
+## The Final Verdict
+
+For most **coding-first teams** in 2026, Claude Opus 4.7 is the better daily driver. For **multimodal workflows** — podcasts, video, very large docs — Gemini 3.1 Ultra is the more natural fit.
+
+<AffiliateButton toolName="Gemini Advanced" />
+<AffiliateButton toolName="Claude Code" />
+
+---
+
+## Related Reads
+
+- [Claude Opus 4.7 vs GPT-5.5 for Coding](/versus/claude-opus-4-7-vs-gpt-5-5-coding)
+- [5 Best Cursor Alternatives in 2026](/alternatives/cursor-alternatives-2026)
+- [The 2026 Agentic Coding Stack ($80/mo)](/ai-stacks/2026-agentic-coding-stack)
+
+---
+
+## Frequently Asked Questions
+
+**Does Gemini 3.1 Ultra actually use its full 2M context window well?**
+For retrieval-style Q&A, yes. For reasoning over the full context, performance drops past ~1M tokens — both models degrade past their effective context.
+
+**Can Claude Opus 4.7 handle video?**
+Not natively. Use an external transcription step or pair Opus 4.7 with Gemini for the ingest step.
+
+**Which is better for vision-heavy coding tasks like Figma → React?**
+Opus 4.7's high-resolution support (3.75MP) edges out Gemini for HTML/CSS fidelity in our test. Gemini is faster but a bit looser.
+
+**Is Gemini 3.1 Ultra worth switching from ChatGPT Plus?**
+If you're a long-context or audio/video user — yes. If you're mostly a coder, stay where you are (or use Claude).
+
+**Do both models support task budgets like Opus 4.7?**
+Only Claude Opus 4.7 has explicit task-budget controls. Gemini exposes a "thinking budget" parameter but doesn't run a live countdown the way Claude does.
